@@ -24,7 +24,12 @@
     <ion-item>
       <ion-icon name="calender-outline" slot="start"></ion-icon>
       <ion-label>Due Date</ion-label>
-      <ion-datetime  [(ngModel)]="taskDate" displayFormat="D MMM YYYY H:mm"></ion-datetime>
+      <ion-datetime-button datetime="datetime"></ion-datetime-button>
+      <ion-modal [keepContentsMounted]="true">
+        <ng-template>
+          <ion-datetime id="datetime" [(ngModel)]="taskDate" displayFormat="D MMM YYYY H:mm"></ion-datetime>
+        </ng-template>
+      </ion-modal>
     </ion-item>
 
     <ion-item>
