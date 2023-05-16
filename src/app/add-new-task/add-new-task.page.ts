@@ -9,20 +9,33 @@ import { ModalController } from '@ionic/angular';
 export class AddNewTaskPage implements OnInit {
   categories = ['work','personal', 'home']
 
-  taskName
+  taskName            
   taskDate
   taskPriority
   taskCategory
 
-  constructor(public modalCtrl:ModalController) { }
+  taskObject
+ 
+
+  constructor(public modalCtrl:ModalController) {}
 
   ngOnInit() {
   }
-  async dismiss(){
-    await this.modalCtrl.dismiss()
+  
+  async dismis(){
+    await this.modalCtrl.dismiss(this.taskObject)
   }
 
   selectedCategory(index){
     this.taskCategory = this.categories[index]
   }
+
+  AddTask(){
+    this.taskObject = ({itemName:this.taskName, 
+                        itemDueDate:this.taskDate,
+                        itemPriority:this.taskPriority,
+                        itemCategory:this.taskCategory })
+    this.dismis()
+  }
 }
+  
