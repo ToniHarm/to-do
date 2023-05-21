@@ -2,6 +2,7 @@ import { TodoService } from './../todo.service';
 import { Component } from '@angular/core';
 import { AddNewTaskPage } from '../add-new-task/add-new-task.page';
 import { ModalController } from '@ionic/angular';
+import { UpdateTaskPage } from '../update-task/update-task.page';
 
 @Component({
   selector: 'app-home',
@@ -9,34 +10,46 @@ import { ModalController } from '@ionic/angular';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage {
-  //todoList = []
-  todoList: {
-value: any; itemName: string; itemDueDate: Date; itemPriority: string; itemCategory: string;
-}[] = [];
+  todoList: any[] = [];
 
-  today : number = Date.now ()
+  today : number = Date.now()
 
-  constructor(public modalCtrl:ModalController, public todoService: TodoService) {}
+  constructor(public modalCtrl:ModalController, public todoService:TodoService) {
+    this.getAllTask()
+  }
   
-  async addTask(){
+  async addNewItem(){
     const modal = await this.modalCtrl.create({
-      component: AddNewTaskPage
+      component: AddNewTaskPage,
     })
 
-    modal.onDidDismiss().then(newTaskObj =>{
-      console.log(newTaskObj.data);
-      this.todoList.push (newTaskObj.data)
-        
+    modal.onDidDismiss().then(newTask =>{
+      this.getAllTask()
     })
-
+    
     return await modal.present ()
   }
 
   getAllTask(){
     this.todoList = this.todoService.getAllTasks()
+    console.log(this.todoService.getAllTasks());
   }
 
-  delete (index) {
-    this.todoList.splice(index,1)
+  delete (key) {
+    this.todoService.deleteTask(key)
+    this.getAllTask()
+  }
+
+  async update(selectedTask){
+    const modal = await this.modalCtrl.create({
+      component: UpdateTaskPage,
+      componentProps: {task: selectedTask}
+    })
+
+  modal.onDidDismiss().then(()=>{
+    this.getAllTask()
+  })
+
+  return await modal.present()
   }
 }

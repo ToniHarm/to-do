@@ -14,23 +14,27 @@ export class TodoService {
     this.storage.set(key,value)
   }
 
-  deleteTask(key,value){
-    this.storage.set(key,value)
+  deleteTask(key){
+    this.storage.remove(key)
   }
 
-  updateTask(key: string, value: any) {
-    return this.storage.set(key, value);
+  updateTask(key, newValue) {
+    this.storage.set(key, newValue)
+    this.getAllTasks()
   }
 
   getAllTasks(){
     let tasks: any = []
-    this.storage.forEach((key, value) => {
-      tasks.push({'key':value, 'value':key})
+    this.storage.forEach((key, value, index) => { 
+      tasks.push({'key': value, 'value':key})
     });
     return tasks
   }
-
+  
   async init(){
     await this.storage.create()
   }
+   
 }
+
+  
